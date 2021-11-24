@@ -18,7 +18,7 @@ loss:
   coef: [1, 0.4]
 
 batch_size: 2
-iters: 80000
+iters: 100000
 
 lr_scheduler:
   type: PolynomialDecay

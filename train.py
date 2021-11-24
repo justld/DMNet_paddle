@@ -22,6 +22,9 @@ from paddleseg.cvlibs import manager, Config
 from paddleseg.utils import get_sys_env, logger, config_check
 from paddleseg.core import train
 
+paddle.seed(10001)
+random.seed(10001)
+np.random.seed(10001)
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Model training')
