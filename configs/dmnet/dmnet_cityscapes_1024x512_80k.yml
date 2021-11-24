@@ -18,10 +18,10 @@ loss:
   coef: [1, 0.4]
 
 batch_size: 2
-iters: 60000
+iters: 80000
 
 lr_scheduler:
   type: PolynomialDecay
-  learning_rate: 0.1
+  learning_rate: 0.01
   end_lr: 0.0
   power: 0.9
