@@ -15,9 +15,9 @@
 >在CityScapes val数据集的测试效果如下表。
 
 
-|NetWork |steps|opt|image_size|batch_size|dataset|memory|card|mIou|config|
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-|DMNet|80K|SGD|1024x512|8|CityScapes|32G|4|79.88|[dmnet_cityscapes_1024x512_80k.yml](configs/dmnet_cityscapes_1024x512_80k.yml)|
+|NetWork |steps|opt|image_size|batch_size|dataset|memory|card|mIou|config|weight|log|
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+|DMNet|80K|SGD|1024x512|8|CityScapes|32G|4|79.88|[dmnet_cityscapes_1024x512_80k.yml](configs/dmnet_cityscapes_1024x512_80k.yml)|[weight](https://bj.bcebos.com/v1/ai-studio-cluster-infinite-task/outputs/105098.tar?authorization=bce-auth-v1%2F0ef6765c1e494918bc0d4c3ca3e5c6d1%2F2021-11-25T02%3A08%3A27Z%2F-1%2F%2F8fd8238db80084be64ea3ae49ddb9ca0f3926a2b0d30dd9f81b5273b4927657a) |[log](log/trainer-0.log)|
 
 ## 3 数据集
 [CityScapes dataset](https://www.cityscapes-dataset.com/)
