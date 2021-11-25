@@ -17,7 +17,7 @@
 
 |NetWork |steps|opt|image_size|batch_size|dataset|memory|card|mIou|config|
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-|DMNet|80K|SGD|1024x512|8|CityScapes|32G|4|0|[dmnet_cityscapes_1024x512_80k.yml](configs/dmnet_cityscapes_1024x512_80k.yml)|
+|DMNet|80K|SGD|1024x512|8|CityScapes|32G|4|79.88|[dmnet_cityscapes_1024x512_80k.yml](configs/dmnet_cityscapes_1024x512_80k.yml)|
 
 ## 3 数据集
 [CityScapes dataset](https://www.cityscapes-dataset.com/)
@@ -81,7 +81,7 @@ python val.py --config configs/dmnet_cityscapes_1024x512_80k.yml --model_path
 │  val.py                       
 ```
 **说明**
-1、本项目在Aistudio平台，使用Tesla V100 * 4 脚本任务训练120K miou达到69.56%。  
+1、本项目在Aistudio平台，使用Tesla V100 * 4 脚本任务训练100K 79.88%。  
 2、本项目基于PaddleSeg开发。  
 
 ## 6 模型信息
@@ -95,6 +95,6 @@ python val.py --config configs/dmnet_cityscapes_1024x512_80k.yml --model_path
 | 框架版本 | PaddlePaddle==2.2.0 |
 | 应用场景 | 语义分割 |
 | 硬件支持 | GPU、CPU |
-| 在线体验 | [notebook](https://aistudio.baidu.com/aistudio/projectdetail/2268710?contributionType=1), [Script](https://aistudio.baidu.com/aistudio/clusterprojectdetail/2388364)|
+| 在线体验 | [notebook], [Script](https://aistudio.baidu.com/studio/project/partial/verify/2904576/a3f53cc704bb48ed9e439ec82eb2d6e1)|
 
 
