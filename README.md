@@ -93,6 +93,7 @@ bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/dmnet_small/tr
 2、本项目基于PaddleSeg开发。  
 
 ## 6 注意
+
 DMNet转为静态图模式，需要固定输入尺寸，具体参考[这里](test_tipc/README.md)。
 
 ## 7 模型信息
