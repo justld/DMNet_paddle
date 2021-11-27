@@ -88,10 +88,14 @@ bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/dmnet_small/tr
 │  val.py                       
 ```
 **说明**
+
 1、本项目在Aistudio平台，使用Tesla V100 * 4 脚本任务训练100K 79.88%。  
 2、本项目基于PaddleSeg开发。  
 
-## 6 模型信息
+## 6 注意
+DMNet转为静态图模式，需要固定输入尺寸，具体参考[这里](test_tipc/readme.md)。
+
+## 7 模型信息
 
 相关信息:
 
