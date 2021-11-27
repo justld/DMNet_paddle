@@ -84,6 +84,7 @@ class DCM(nn.Layer):
         super().__init__()
         self.filter_size = filter_size
         self.fusion = fusion
+        self.channels = channels
 
         self.filter_gen_conv = nn.Conv2D(in_channels, channels, 1)
         self.input_redu_conv = layers.ConvBNReLU(in_channels, channels, 1)
@@ -97,7 +98,7 @@ class DCM(nn.Layer):
     def forward(self, x):
         generated_filter = self.filter_gen_conv(F.adaptive_avg_pool2d(x, self.filter_size))
         x = self.input_redu_conv(x)
-        b, c, h, w = paddle.shape(x)
+        b, c, h, w = x.shape
         x = x.reshape([1, b * c, h, w])
         generated_filter = generated_filter.reshape([b * c, 1, self.filter_size, self.filter_size])
         pad = (self.filter_size - 1) // 2
@@ -106,16 +107,10 @@ class DCM(nn.Layer):
         else:
             pad = (pad + 1, pad, pad + 1, pad)
         x = F.pad(x, pad, mode='constant', value=0) # [1, b * c, h, w]
-        output = F.conv2d(x, weight=generated_filter, groups=b.numpy() * c.numpy()) 
-        output = output.reshape([b, c, h, w])
+        output = F.conv2d(x, weight=generated_filter, groups=b * c)
+        output = output.reshape([b, self.channels, h, w])
         output = self.norm(output)
         output = self.act(output)
         if self.fusion:
             output = self.fusion_conv(output)
         return output
-
-
-
-
-
-

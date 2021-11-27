@@ -64,6 +64,13 @@ output目录下包含已经训练好的模型参数以及对应的日志文件�
 python val.py --config configs/dmnet_cityscapes_1024x512_80k.yml --model_path 
 ```
 
+### 第四步：test_tipc
+output目录下包含已经训练好的模型参数以及对应的日志文件。
+```bash
+bash test_tipc/prepare.sh ./test_tipc/configs/dmnet_small/train_infer_python.txt 'lite_train_lite_infer'
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/dmnet_small/train_infer_python.txt 'lite_train_lite_infer'
+```
+
 ## 5 代码结构与说明
 **代码结构**
 ```

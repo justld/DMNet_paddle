@@ -82,13 +82,12 @@ precision_list=$(func_parser_value "${lines[45]}")
 infer_model_key=$(func_parser_key "${lines[46]}")
 image_dir_key=$(func_parser_key "${lines[47]}")
 infer_img_dir=$(func_parser_value "${lines[47]}")
-save_log_key=$(func_parser_key "${lines[48]}")
+infer_save_key=$(func_parser_key "${lines[48]}")
+infer_save_dir=$(func_parser_value "${lines[48]}")
 benchmark_key=$(func_parser_key "${lines[49]}")
 benchmark_value=$(func_parser_value "${lines[49]}")
 infer_key1=$(func_parser_key "${lines[50]}")
 infer_value1=$(func_parser_value "${lines[50]}")
-infer_key2=$(func_parser_key "${lines[51]}")	##
-infer_value2=$(func_parser_value "${lines[51]}") ##
 
 # parser klquant_infer
 if [ ${MODE} = "klquant_whole_infer" ]; then
@@ -117,7 +116,8 @@ if [ ${MODE} = "klquant_whole_infer" ]; then
     infer_model_key=$(func_parser_key "${lines[13]}")
     image_dir_key=$(func_parser_key "${lines[14]}")
     infer_img_dir=$(func_parser_value "${lines[14]}")
-    save_log_key=$(func_parser_key "${lines[15]}")
+    infer_save_key=$(func_parser_key "${lines[15]}")
+    infer_save_dir=$(func_parser_value "${lines[15]}")  
     benchmark_key=$(func_parser_key "${lines[16]}")
     benchmark_value=$(func_parser_value "${lines[16]}")
     infer_key1=$(func_parser_key "${lines[17]}")
@@ -163,7 +163,8 @@ function func_inference(){
                             set_cpu_threads=$(func_set_params "${cpu_threads_key}" "${threads}")
                             set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
                             set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
-                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} > ${_save_log_path} 2>&1 "
+                            set_infer_params2=$(func_set_params "${infer_save_key}" "${infer_save_dir}")  ##
+                            command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${use_mkldnn_key}=${use_mkldnn} ${set_cpu_threads} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_precision} ${set_infer_params1} ${set_infer_params2} > ${_save_log_path} 2>&1 "
                             eval $command
                             last_status=${PIPESTATUS[0]}
                             eval "cat ${_save_log_path}"
@@ -193,7 +194,7 @@ function func_inference(){
                         set_precision=$(func_set_params "${precision_key}" "${precision}")
                         set_model_dir=$(func_set_params "${infer_model_key}" "${_model_dir}")
                         set_infer_params1=$(func_set_params "${infer_key1}" "${infer_value1}")
-                        set_infer_params2=$(func_set_params "${infer_key2}" "${infer_value2}")  ##
+                        set_infer_params2=$(func_set_params "${infer_save_key}" "${infer_save_dir}")  
                         command="${_python} ${_script} ${use_gpu_key}=${use_gpu} ${set_tensorrt} ${set_precision} ${set_model_dir} ${set_batchsize} ${set_infer_data} ${set_benchmark} ${set_infer_params1} ${set_infer_params2} > ${_save_log_path} 2>&1 " ##
                         eval $command
                         last_status=${PIPESTATUS[0]}

@@ -1,65 +1,57 @@
 
-# 从训练到推理部署工具链测试方法介绍
+# 飞桨训推一体认证（TIPC）
 
-test_train_inference_python.sh和params.txt文件配合使用，完成分割模型从训练到预测的流程测试。
+## 1. 简介
 
-# 安装依赖
-- 安装PaddlePaddle >= 2.1.2
-- 安装PaddleSeg依赖
-    ```
-    pip3 install  -r ../requirements.txt
-    ```
-- 安装autolog
-    ```
-    git clone https://github.com/LDOUBLEV/AutoLog
-    cd AutoLog
-    pip3 install -r requirements.txt
-    python3 setup.py bdist_wheel
-    pip3 install ./dist/auto_log-1.0.0-py3-none-any.whl
-    cd ../
-    ```
+飞桨除了基本的模型训练和预测，还提供了支持多端多平台的高性能推理部署工具。本文档提供了PaddleOCR中所有模型的飞桨训推一体认证 (Training and Inference Pipeline Certification(TIPC)) 信息和测试工具，方便用户查阅每种模型的训练推理部署打通情况，并可以进行一键测试。
 
-# 目录介绍
+<div align="center">
+    <img src="docs/guide.png" width="1000">
+</div>
 
-```bash
+
+## 2. 测试工具简介
+### 目录介绍
+
+```shell
 test_tipc/
-├── configs/fcn_hrnetw18_small/train_infer_python.txt                                  # 测试分割模型的参数配置文件
-└── fcn_hrnetw18_small_v1_humanseg_192x192_mini_supervisely.yml   # 测试分割模型的config配置文件
-└── prepare.sh                                                    # 完成test_model.sh运行所需要的数据和模型下载
-└── test_train_inference_python.sh                                                 # 测试主程序
+├── configs/  # 配置文件目录
+    ├── dmnet_small    
+        ├── train_infer_python.txt      # 测试Linux上python训练预测（基础训练预测）的配置文件
+        ├── dmnet_small_v1_humanseg_192x192_mini_supervisely.yml
+├── results/   # 预测结果
+├── prepare.sh                        # 完成test_*.sh运行所需要的数据和模型下载
+├── test_train_inference_python.sh    # 测试python训练预测的主程序
+├── compare_results.py                # 用于对比log中的预测结果与results中的预存结果精度误差是否在限定范围内
+└── readme.md                         # 使用文档
 ```
 
-# 使用方法
+### 测试流程概述
 
-test_train_inference_python.sh包含四种运行模式，每种模式的运行数据不同，分别用于测试速度和精度，分别是：
+使用本工具，可以测试不同功能的支持情况，以及预测结果是否对齐，测试流程概括如下：
 
-- 模式1：lite_train_infer，使用少量数据训练，用于快速验证训练到预测的走通流程，不验证精度和速度；
+1. 运行prepare.sh准备测试所需数据和模型；
+2. 运行要测试的功能对应的测试脚本`test_train_inference_python.sh`，产出log，由log可以看到不同配置是否运行成功；
+
+测试单项功能仅需两行命令，**如需测试不同模型/功能，替换配置文件即可**，命令格式如下：
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/fcn_hrnetw18_small/train_infer_python.txt 'lite_train_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/fcn_hrnetw18_small/train_infer_python.txt 'lite_train_infer'
-```  
+# 功能：准备数据
+# 格式：bash + 运行脚本 + 参数1: 配置文件选择 + 参数2: 模式选择
+bash test_tipc/prepare.sh  configs/[model_name]/[params_file_name]  [Mode]
 
-- 模式2：whole_infer，使用少量数据训练，一定量数据预测，用于验证训练后的模型执行预测，预测速度是否合理；
+# 功能：运行测试
+# 格式：bash + 运行脚本 + 参数1: 配置文件选择 + 参数2: 模式选择
+bash test_tipc/test_train_inference_python.sh configs/[model_name]/[params_file_name]  [Mode]
+```
+
+以下为示例：
 ```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/fcn_hrnetw18_small/train_infer_python.txt 'whole_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/fcn_hrnetw18_small/train_infer_python.txt 'whole_infer'
-```  
+# 功能：准备数据
+# 格式：bash + 运行脚本 + 参数1: 配置文件选择 + 参数2: 模式选择
+bash test_tipc/prepare.sh ./test_tipc/configs/dmnet_small/train_infer_python.txt 'lite_train_lite_infer'
 
-- 模式3：infer 不训练，全量数据预测，走通开源模型评估、动转静，检查inference model预测时间和精度;
-```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/fcn_hrnetw18_small/train_infer_python.txt 'infer'
-# 用法1:
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/fcn_hrnetw18_small/train_infer_python.txt 'infer'
-# 用法2: 指定GPU卡预测，第三个传入参数为GPU卡号
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/fcn_hrnetw18_small/train_infer_python.txt 'infer' '1'
-```  
+# 功能：运行测试
+# 格式：bash + 运行脚本 + 参数1: 配置文件选择 + 参数2: 模式选择
+bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/dmnet_small/train_infer_python.txt 'lite_train_lite_infer'
+```
 
-- 模式4：whole_train_infer , CE： 全量数据训练，全量数据预测，验证模型训练精度，预测精度，预测速度；
-```shell
-bash test_tipc/prepare.sh ./test_tipc/configs/fcn_hrnetw18_small/train_infer_python.txt 'whole_train_infer'
-bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/fcn_hrnetw18_small/train_infer_python.txt 'whole_train_infer'
-```  
-
-
-# 日志输出
-最终在```test_tipc/output```目录下生成.log后缀的日志文件
