@@ -55,3 +55,6 @@ bash test_tipc/prepare.sh ./test_tipc/configs/dmnet_small/train_infer_python.txt
 bash test_tipc/test_train_inference_python.sh ./test_tipc/configs/dmnet_small/train_infer_python.txt 'lite_train_lite_infer'
 ```
 
+## 3. 注意
+
+DMNet导出模型为静态图时，请固定输入尺寸，参考test_tipc/configs/dmnet_small/train_infer_python.txt设置
