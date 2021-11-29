@@ -107,6 +107,6 @@ DMNet转为静态图模式，需要固定输入尺寸，具体参考[这里](tes
 | 框架版本 | PaddlePaddle==2.2.0 |
 | 应用场景 | 语义分割 |
 | 硬件支持 | GPU、CPU |
-| 在线体验 | [notebook], [Script](https://aistudio.baidu.com/studio/project/partial/verify/2904576/a3f53cc704bb48ed9e439ec82eb2d6e1)|
+| 在线体验 | [notebook](https://aistudio.baidu.com/aistudio/projectdetail/3026330?contributionType=1), [Script](https://aistudio.baidu.com/studio/project/partial/verify/2904576/a3f53cc704bb48ed9e439ec82eb2d6e1)|
 
 
